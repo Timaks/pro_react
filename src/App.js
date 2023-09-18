@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Counter from "./components/Counter";
+import ClassCounter from "./components/ClassCounter";
 
 function App() {
   //возвращает масссив из двух объектов(значение и функция)
@@ -7,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-       <Counter/>
+       <ClassCounter/>
     </div>
   );
 }
