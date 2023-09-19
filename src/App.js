@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import './styles/App.css';
@@ -14,12 +14,18 @@ function App() {
     {id: 3, title: 'Post3', body: 'Description'}
   ]);
 
-const [title, setTitle] = useState('ttt')
+const [title, setTitle] = useState('')
+
+// с помощью хука делаем неуправляемый компонент
+const bodyInputRef= useRef();
+
   //делаем стрелочной функцией
   const addNewPost = (e) => 
   //предотвращаем действие по умолчанию
     e.preventDefault()
     console.log(title)
+
+    console.log(bodyInputRef.current)
 
   return (
     <div className="App">
@@ -32,7 +38,12 @@ const [title, setTitle] = useState('ttt')
             type="text" 
             placeholder="Название поста"
             />
-          <MyInput type="text" placeholder="Описание поста"/>
+            {/* Неуправляемый\ Неконтролируемый компонент */}
+          <MyInput 
+            ref={bodyInputRef}
+            type="text" 
+            placeholder="Описание поста"
+            />
           <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
       <PostList posts={posts} title="Список постов 1"/>
