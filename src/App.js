@@ -14,12 +14,26 @@ function App() {
     {id: 3, title: 'Post3', body: 'Description'}
   ]);
 
+const [title, setTitle] = useState('ttt')
+  //делаем стрелочной функцией
+  const addNewPost = (e) => 
+  //предотвращаем действие по умолчанию
+    e.preventDefault()
+    console.log(title)
+
   return (
     <div className="App">
       <form>
-          <MyInput type="text" placeholder="Название поста"/>
+        {/* управляемый компонент */}
+          <MyInput 
+            value={title}
+            // отслеживаем что вводится в инпут, двусторонее связывыние
+            onChange={e => setTitle(e.target.value)}
+            type="text" 
+            placeholder="Название поста"
+            />
           <MyInput type="text" placeholder="Описание поста"/>
-            <MyButton>Создать пост</MyButton>
+          <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
       <PostList posts={posts} title="Список постов 1"/>
     </div>
