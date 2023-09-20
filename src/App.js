@@ -19,6 +19,18 @@ function App() {
 //двустороннее связывание
 const [selectedSort, setSelectedSort] = useState('')
 
+const [searchQuery, setSearchQuery] = useState('')
+
+function getSortedPosts (){
+  console.log('отработала ф-ция')
+  if (selectedSort) {
+      return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+  }
+      return posts;
+}
+
+const sortedPosts =  getSortedPosts()
+
 const createPost = (newPost) => {
   // изменяем состояние, к постам добавляем новый пост
   setPosts([...posts, newPost])
@@ -31,8 +43,6 @@ const removePost = (post) => {
 
 const sortPosts = (sort) => {
     setSelectedSort(sort);
-    //передаем отсортированный массив, делаем копию и мутируем копию
-    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
 }
   return (
     <div className="App">
@@ -40,6 +50,11 @@ const sortPosts = (sort) => {
       <PostForm create={createPost}/>
     <hr style={{margin: '15px 0'}}/>
       <div>
+       <MyInput
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="Поиск..."
+       />
           <MySelect
               value={selectedSort}
               // опция что выбрал пользователь
@@ -53,7 +68,7 @@ const sortPosts = (sort) => {
       </div>
     {/* условная отрисовка */}
       {posts.length !==0
-        ? <PostList remove={removePost} posts={posts} title="Список постов 1"/>
+        ? <PostList remove={removePost} posts={sortedPosts} title="Список постов 1"/>
         : <h1 style={{textAlign: 'center'}}>
             Посты не найдены
           </h1>
