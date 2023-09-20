@@ -15,17 +15,20 @@ function App() {
   ]);
 
 const [title, setTitle] = useState('')
+const [body, setBody] = useState('')
 
-// с помощью хука делаем неуправляемый компонент
-const bodyInputRef= useRef();
-
-  //делаем стрелочной функцией
-  const addNewPost = (e) => 
-  //предотвращаем действие по умолчанию
+  const addNewPost = (e) => {
     e.preventDefault()
-    console.log(title)
-
-    console.log(bodyInputRef.current)
+    const newPost = {
+      id: Date.now(),
+      title,
+      body
+    }
+    //разворачиваем старый масси и добавляем к нему новые посты
+    setPosts([...posts, newPost])
+    setTitle('')
+    setBody('')
+  }
 
   return (
     <div className="App">
@@ -40,7 +43,8 @@ const bodyInputRef= useRef();
             />
             {/* Неуправляемый\ Неконтролируемый компонент */}
           <MyInput 
-            ref={bodyInputRef}
+            value={body}
+            onChange={e => setBody(e.target.value)}
             type="text" 
             placeholder="Описание поста"
             />
