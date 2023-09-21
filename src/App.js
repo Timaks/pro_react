@@ -12,6 +12,7 @@ import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import { usePosts } from "./hooks/usePosts";
 import axios from "axios";
+import PostService from "./API/PostService";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -32,8 +33,8 @@ function App() {
   }  
 
   async function fetchPosts(){
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
-    setPosts(response.data)
+    const posts = await PostService.getAll();
+    setPosts(posts)
   }
 
   // получаем post из дочернего компонента
@@ -42,7 +43,6 @@ function App() {
   }
     return (
       <div className="App">
-        <button onClick={fetchPosts}>Get post</button>
         <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
           Создать пользователя
         </MyButton>
