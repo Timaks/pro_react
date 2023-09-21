@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import './styles/App.css';
@@ -21,15 +21,20 @@ const [selectedSort, setSelectedSort] = useState('')
 
 const [searchQuery, setSearchQuery] = useState('')
 
-function getSortedPosts (){
+//кеширование
+const sortedPosts =  useMemo( () => { 
   console.log('отработала ф-ция')
   if (selectedSort) {
-      return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
-  }
-      return posts;
+    return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
 }
+    return posts;
+}, [selectedSort, posts])
 
-const sortedPosts =  getSortedPosts()
+
+//отсортированный массив, возвращаем только то что вводится в запросе(регистр+)
+const sortedAndSearchedPosts = useMemo( () => {
+    return sortedPosts.filter(post => post.title.toLocaleLowerCase().includes(searchQuery))
+}, [searchQuery, sortedPosts])
 
 const createPost = (newPost) => {
   // изменяем состояние, к постам добавляем новый пост
@@ -67,8 +72,8 @@ const sortPosts = (sort) => {
           />
       </div>
     {/* условная отрисовка */}
-      {posts.length !==0
-        ? <PostList remove={removePost} posts={sortedPosts} title="Список постов 1"/>
+      {sortedAndSearchedPosts.length
+        ? <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Список постов 1"/>
         : <h1 style={{textAlign: 'center'}}>
             Посты не найдены
           </h1>
