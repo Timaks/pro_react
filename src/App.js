@@ -9,6 +9,7 @@ import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/UI/MyModal/MyModal";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -18,6 +19,9 @@ function App() {
   ]);
 
 const [filter, setFilter] = useState({sort: '', query: ''})
+const [modal, setModal] = useState(false);
+
+
 //кеширование
 const sortedPosts =  useMemo( () => { 
   console.log('отработала ф-ция')
@@ -36,6 +40,7 @@ const sortedAndSearchedPosts = useMemo( () => {
 const createPost = (newPost) => {
   // изменяем состояние, к постам добавляем новый пост
   setPosts([...posts, newPost])
+  setModal(false)
 }  
 // получаем post из дочернего компонента
 const removePost = (post) => {
@@ -46,8 +51,15 @@ const removePost = (post) => {
 
   return (
     <div className="App">
+      <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
+        Создать пользователя
+      </MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost}/>
+      </MyModal>
+
       {/* передаем ф-ию обратного вызова */}
-      <PostForm create={createPost}/>
+      
       <hr style={{margin: '15px 0'}}/>
       <PostFilter filter={filter} setFilter={setFilter}/>
       <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Список постов 1"/>
