@@ -6,10 +6,10 @@ export const useFetching = (callback) => {
    const [error, setError] = useState('');
 
 //помещаем сюда текст ошибки
-    const fetching = async () => {
+    const fetching = async (...args) => {
         try {
             setIsLoading(true)
-            await callback()
+            await callback(...args)
         }
         catch (e) {
             setError(e.message);
