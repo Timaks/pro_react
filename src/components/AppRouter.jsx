@@ -4,24 +4,19 @@ import About from "../pages/About";
 import Posts from "../pages/Posts";
 import Error from "../pages/Error";
 import PostIdPage from "../pages/PostIdPage";
+import { routes } from "../router/router";
 
 const AppRouter = () => {
     return (
         //  Позволяет группировать маршруты
         <Switch>
-          <Route path="/about">
-                <About/>
-          </Route>
-          <Route exact path="/posts">
-                <Posts/>
-          </Route>
-          {/* Динамический маршрут :id (делает разницу в словах posts exact)*/}
-          <Route exact path="/posts/:id">
-                <PostIdPage/>
-          </Route>
-          <Route path="/error">
-                <Error/>
-          </Route>
+          {routes.map(route => 
+            <Route 
+                  component={route.component} 
+                  path={route.path} 
+                  exact={route.exact}
+            />
+          )}
           <Redirect to='/posts'/>
         </Switch>
     )
