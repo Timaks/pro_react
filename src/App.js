@@ -11,16 +11,20 @@ import { AuthContext } from "./context";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
+//закончился ли запрос на сервер
+  const [isLoading, setLoading] = useState(true);
 //проверка на авторизованность (localStorage получаем авторизован ли пользователь)
   useEffect(() => {
       if(localStorage.getItem('auth')){
         setIsAuth(true)
       }
+      setLoading(false);
   }, [])
     return (
       <AuthContext.Provider value={{
         isAuth, 
-        setIsAuth
+        setIsAuth,
+        isLoading
       }}>
         <BrowserRouter> 
           <Navbar/>
